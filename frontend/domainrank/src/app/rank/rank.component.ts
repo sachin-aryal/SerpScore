@@ -1,9 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {ApiService} from "../services/api.service";
-import {first} from "rxjs/internal/operators";
-import { faArrowUp, faArrowDown, faSearch, faChartLine } from '@fortawesome/free-solid-svg-icons';
-import {HelperService} from "../services/helper.service";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {ApiService} from '../services/api.service';
+import {first} from 'rxjs/internal/operators';
+import {
+  faArrowDown,
+  faArrowUp,
+  faChartLine,
+  faColumns,
+  faFileExport,
+  faSearch,
+  faList
+} from '@fortawesome/free-solid-svg-icons';
+import {HelperService} from '../services/helper.service';
 
 @Component({
   selector: 'app-rank',
@@ -19,97 +27,134 @@ export class RankComponent implements OnInit {
   faArrowDown = faArrowDown;
   faSearch = faSearch;
   faChartLine = faChartLine;
-  isChart: boolean;
-  isSearch: boolean;
-  chart = undefined;
+  faFileExport = faFileExport;
+  faColumns = faColumns;
+  faList = faList;
+  isChart = false;
+  isSearch = false;
+  rankChart = undefined;
+  keywordChart = undefined;
+  domainId: string;
 
   constructor(private route: ActivatedRoute,
-              private apiService: ApiService, private helperService: HelperService) { }
+              private apiService: ApiService,
+              private helperService: HelperService) {
+    route.params.subscribe(val => {
+      const id = this.route.snapshot.params.id;
+      this.domainId = id;
+      this.loadRecords(id);
+    });
+
+  }
 
   ngOnInit() {
-    const id = this.route.snapshot.params['id'];
-    this.loadRecords(id);
+
   }
 
   loadRecords(id) {
-    const params = {"domain_id": id};
-    this.apiService.post(params, "GET_RANK").pipe(first())
+    const params = {domain_id: id};
+    this.apiService.post(params, 'GET_RANK').pipe(first())
       .subscribe(
         data => {
           const success = data.success;
-          if(success == true){
-            const receivedData = JSON.parse(data.data);
-            this.data = receivedData;
-          }else{
-            this.helperService.showSpecificNotification("error", data.message, data.message)
+          if (success === true) {
+            this.data = JSON.parse(data.data);
+            if (this.data.length === 0) {
+              this.helperService.showSpecificNotification('error', 'No Ranking Data', '');
+              return;
+            }
+            const processedData = this.getKeywordProcessedData(this.data);
+            const ranks = [];
+            processedData.forEach(record => {
+              const row = {};
+              row['name'] = record.keyword;
+              row['type'] = undefined;
+              row['data'] = [record.page_rank];
+              ranks.push(row);
+            });
+            this.keywordChart = this.helperService.plotColumnChart('Keyword Rank', 'Rank', ranks);
+          } else {
+            this.helperService.showSpecificNotification('error', data.message, data.message);
           }
         },
         error => {
-          this.helperService.showSpecificNotification("error", error, error)
+          this.helperService.showSpecificNotification('error', error, error);
         });
   }
 
-  getUrl(url){
-    if(url){
-      var pattern = /^((http|https|ftp):\/\/)/;
-      if(!pattern.test(url)) {
-        url = "https://" + url;
+  getUrl(url) {
+    if (url) {
+      const pattern = /^((http|https|ftp):\/\/)/;
+      if (!pattern.test(url)) {
+        url = 'https://' + url;
       }
     }
     return url;
   }
 
-  search_data(config_id){
-    this.apiService.post({"config_id": config_id}, "RANK_DATA").pipe(first())
+  search_data(configId) {
+    this.apiService.post({config_id: configId}, 'RANK_DATA').pipe(first())
       .subscribe(
         data => {
           const success = data.success;
-          if(success == true){
+          if (success === true) {
             const receivedData = JSON.parse(data.data);
             this.isSearch = true;
             this.isChart = false;
             this.drilledData = receivedData;
-          }else{
-            this.helperService.showSpecificNotification("error", data.message, data.message)
+          } else {
+            this.helperService.showSpecificNotification('error', data.message, data.message);
           }
         },
         error => {
-          this.helperService.showSpecificNotification("error", error, error)
+          this.helperService.showSpecificNotification('error', error, error);
         });
   }
 
-  plotChart(config_id){
-    this.apiService.post({"config_id": config_id}, "RANK_DATA").pipe(first())
+  plotChart(configId) {
+    this.apiService.post({config_id: configId}, 'RANK_DATA').pipe(first())
       .subscribe(
         data => {
           const success = data.success;
-          if(success == true){
-            const receivedData = JSON.parse(data.data);
-            this.drilledData = receivedData;
-            if(this.drilledData.length > 0){
-              let domain = this.drilledData[0].Domain;
-              let key_word = this.drilledData[0].Keyword;
+          if (success === true) {
+            this.drilledData = JSON.parse(data.data);
+            if (this.drilledData.length > 0) {
+              const domain = this.drilledData[0].Domain;
+              const keyword = this.drilledData[0].Keyword;
               this.isSearch = false;
               this.isChart = true;
-              let data = this.getProcessedData(this.drilledData);
-              this.chart = this.helperService.plotSplineChart("spline", 'datetime', domain +" - "+ key_word, "Google Ranking",
-                key_word, data)
+              const chartData = this.getProcessedData(this.drilledData);
+              this.rankChart = this.helperService.plotSplineChart('datetime', domain + ' - ' + keyword, 'Google Ranking',
+                keyword, chartData);
             }
-          }else{
-            this.helperService.showSpecificNotification("error", data.message, data.message)
+          } else {
+            this.helperService.showSpecificNotification('error', data.message, data.message);
           }
         },
         error => {
-          this.helperService.showSpecificNotification("error", error, error)
+          this.helperService.showSpecificNotification('error', error, error);
         });
   }
 
-  getProcessedData(records){
-    let final_data = [];
-    records.forEach(record => {
-      let row = [Date.parse(record["Date Added"]), record["Page Rank"]];
-      final_data.push(row)
+  getKeywordProcessedData(records) {
+    const items = records.slice(0, 10).map(i => {
+      return i;
     });
-    return final_data;
+    return items;
   }
+
+  getProcessedData(records) {
+    const finalData = [];
+    records.forEach(record => {
+      const row = [Date.parse(record['Date Added']), record['Page Rank']];
+      finalData.push(row);
+    });
+    return finalData;
+  }
+
+  viewMainChart() {
+    this.isChart = false;
+    this.isSearch = false;
+  }
+
 }

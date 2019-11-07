@@ -10,13 +10,13 @@ export class HelperService {
   private notifier: NotifierService;
 
   constructor(notifier: NotifierService) {
-        this.notifier = notifier;
+    this.notifier = notifier;
   }
 
-  plotSplineChart(type, xAxisType, title, yAxisTitle, series_name, data){
+  plotSplineChart(xAxisType, title, yAxisTitle, seriesName, data) {
     return new Chart({
       chart: {
-        type: type
+        type: 'spline'
       },
       title: {
         text: title
@@ -38,6 +38,7 @@ export class HelperService {
         title: {
           text: yAxisTitle
         },
+        allowDecimals: false,
         min: 0
       },
       tooltip: {
@@ -54,21 +55,74 @@ export class HelperService {
       },
       colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
       series: [{
-        type: type,
-        name: series_name,
-        data: data
+        type: 'spline',
+        name: seriesName,
+        data
       }]
     });
 
   }
 
-  public showSpecificNotification( type: string, message: string, id: string ): void {
-		this.notifier.show( {
-			id,
-			message,
-			type
-		} );
-	}
+  plotColumnChart(title, yAxisTitle, data) {
+    return new Chart({
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: title
+      },
+      credits: {
+        enabled: false
+      },
+      xAxis: {
+        labels: {
+          enabled: false
+        }
+      },
+      tooltip: {
+        formatter() {
+          return 'Rank: <b>' + this.y + '</b><br>Keyword: <b>' + this.series.name + '</b>';
+        }
+      },
+      yAxis: {
+        title: {
+          text: yAxisTitle
+        },
+        allowDecimals: false,
+        min: 0
+      },
 
+      plotOptions: {
+        column: {
+          pointPadding: 0.2,
+          borderWidth: 0
+        }
+      },
+      series: data
+    });
+
+  }
+
+  public showSpecificNotification( type: string, message: string, id: string ): void {
+    this.notifier.show( {
+      id,
+      message,
+      type
+    } );
+  }
+
+  exportDomainReport(domainId, apiService) {
+    apiService.downloadFile({domain_id: domainId}, 'DOWNLOAD_DOMAIN_REPORT').
+    subscribe((data) => {
+      const downloadURL = window.URL.createObjectURL(data);
+      const link = document.createElement('a');
+      link.href = downloadURL;
+      link.download = domainId + '_report.csv';
+      link.click();
+    },
+    error => {
+          this.showSpecificNotification('error', error, '');
+    });
+  }
 
 }

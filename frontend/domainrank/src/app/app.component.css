@@ -1,11 +1,18 @@
 .navbar{
-  background-color: #1b1b1b !important;
+  background-color: #475090 !important;
+}
+
+footer {
+  width: 100%;
+  color: black;
+  text-align: center;
+  /*background-color: #475090 !important;*/
+  font-size: 14px;
 }
 
 .nav-link{
   color: #fff !important;
 }
-
 .navbar-brand{
   color: #fff !important;
 }
@@ -14,10 +21,11 @@
   float: right;
 }
 .navbar-header{
-  display: inline-block;
+  display: inline-block !important;
 }
 .nav-item{
   cursor: pointer;
+  font-size: 14px;
 }
 
 .dropdown-item {
@@ -28,7 +36,7 @@
   line-height: 1.42857143;
   color: #333;
   white-space: nowrap;
-  font-size: 15px;
+  font-size: 14px;
   cursor: pointer;
 }
 .dropdown-submenu{
@@ -52,7 +60,7 @@
 }
 
 .dropdown-item:hover{
-  background-color: #337ab7;
+  background-color: #cbccda;
 }
 
 .dropdown-submenu {

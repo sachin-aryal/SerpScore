@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { faPen, faTrash, faFileExport } from '@fortawesome/free-solid-svg-icons';
-import {HelperService} from "../services/helper.service";
+import {HelperService} from '../services/helper.service';
 
 @Component({
   selector: 'app-home',
@@ -15,42 +15,23 @@ export class HomeComponent implements OnInit {
   faTrash = faTrash;
   faFileExport = faFileExport;
   constructor(private apiService: ApiService, private helperService: HelperService) {
-    this.domainData = []
+    this.domainData = [];
   }
 
   getAllDomains() {
-    this.apiService.post({}, "LIST_CONFIG").
+    this.apiService.post({}, 'LIST_CONFIG').
     subscribe(response => {
-      if(response.success == true){
+      if (response.success === true) {
         this.domainData = JSON.parse(response.data);
       }
     },
     error => {
-          this.helperService.showSpecificNotification("error", error, '')
-    })
-  }
-
-  ngOnInit() {
-    this.getAllDomains()
-  }
-
-  exportReport(domain_id){
-
-    this.apiService.downloadFile({"domain_id": domain_id}, "DOWNLOAD_DOMAIN_REPORT").
-    subscribe((data) => {
-      let downloadURL = window.URL.createObjectURL(data);
-      let link = document.createElement('a');
-      link.href = downloadURL;
-      link.download = domain_id+"_report.csv";
-      link.click();
-    },
-    error => {
-          this.helperService.showSpecificNotification("error", error, '')
+          this.helperService.showSpecificNotification('error', error, '');
     });
   }
 
-  deleteDomain(item){
-
+  ngOnInit() {
+    this.getAllDomains();
   }
 
 }

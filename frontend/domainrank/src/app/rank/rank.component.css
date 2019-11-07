@@ -21,7 +21,14 @@
   cursor: pointer;
 }
 
-.rank-graph{
+.rank-graph, .keyword-rank-graph{
   margin-top: 15px;
-  height: 350px;
+  height: 400px;
+}
+
+.rank-action{
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eeeeee;
+  padding: 10px;
+  width: 100%;
 }

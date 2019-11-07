@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
-import {ActivatedRoute, Router} from "@angular/router";
-import {Observable} from "rxjs/index";
-import {first} from "rxjs/internal/operators";
-import {HelperService} from "../services/helper.service";
+import {ActivatedRoute, Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {first} from 'rxjs/internal/operators';
+import {HelperService} from '../services/helper.service';
 
 @Component({
   selector: 'app-login',
@@ -23,8 +23,7 @@ export class LoginComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private authService: AuthService,
-              private helperService: HelperService)
-  {
+              private helperService: HelperService) {
     this.isLoggedIn$ = this.authService.isLoggedIn;
     if (this.isLoggedIn$) {
       this.router.navigate(['home']);
@@ -37,7 +36,7 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required]
     });
     this.authService.logout();
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
   }
 
   get f() { return this.loginForm.controls; }
@@ -55,14 +54,15 @@ export class LoginComponent implements OnInit {
           this.router.navigate([this.returnUrl]);
         },
         error => {
-          try{
-            var e = JSON.parse(error);
-            var err = e.error.non_field_errors[0];
-          }catch (ex){
+          let err = '';
+          try {
+            const e = JSON.parse(error);
+            err = e.error.non_field_errors[0];
+          } catch (ex) {
             err = error;
           }
           this.loading = false;
-          this.helperService.showSpecificNotification("error", err, err)
+          this.helperService.showSpecificNotification('error', err, err);
         });
   }
 }

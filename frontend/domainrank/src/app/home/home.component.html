@@ -25,7 +25,7 @@
               <td>
                 <fa-icon class="edit-icon" title="Edit Configuration" [routerLink]="['/config/edit/'+item.id]" [icon]="faPen"></fa-icon>&nbsp;|&nbsp;
                 <fa-icon class="trash-icon" title="Delete Configuration" (click)="deleteDomain(item)" [icon]="faTrash"></fa-icon>&nbsp;|&nbsp;
-                <fa-icon title="Export Report" (click)="exportReport(item.id)" [icon]="faFileExport"></fa-icon>
+                <fa-icon title="Export Report" (click)="helperService.exportDomainReport(item.id, apiService)" [icon]="faFileExport"></fa-icon>
               </td>
             </tr>
             </tbody>

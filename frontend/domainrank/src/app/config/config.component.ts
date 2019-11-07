@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ApiService} from "../services/api.service";
-import {first} from "rxjs/internal/operators";
-import {ActivatedRoute, Router} from "@angular/router";
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ApiService} from '../services/api.service';
+import {first} from 'rxjs/internal/operators';
+import {ActivatedRoute, Router} from '@angular/router';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import {HelperService} from "../services/helper.service";
+import {HelperService} from '../services/helper.service';
 
 @Component({
   selector: 'app-config',
@@ -27,31 +27,31 @@ export class ConfigComponent implements OnInit {
               private helperService: HelperService) { }
 
   ngOnInit() {
-    const id = this.route.snapshot.params['id'];
+    const id = this.route.snapshot.params.id;
     this.configForm = this.formBuilder.group({
       domain: ['', Validators.required],
       keywords: this.formBuilder.array([])
     });
-    if(id){
-      this.loadConfig(id)
-    }else{
-      this.addKeyword()
+    if (id) {
+      this.loadConfig(id);
+    } else {
+      this.addKeyword();
     }
   }
 
-  loadConfig(id){
-    const params = {"domain_id": id};
-    this.apiService.post(params, "EXTRACT_CONFIG").pipe(first())
+  loadConfig(id) {
+    const params = {domain_id: id};
+    this.apiService.post(params, 'EXTRACT_CONFIG').pipe(first())
       .subscribe(
         data => {
           const success = data.success;
-          if(success == true){
+          if (success === true) {
             const receivedData = JSON.parse(data.data);
             this.id = id;
             this.configForm.patchValue({
               domain: receivedData.domain
             });
-            let keywordsControl = <FormArray>this.configForm.controls.keywords;
+            const keywordsControl = this.configForm.controls.keywords as FormArray;
 
             receivedData.configs.forEach(config => {
               keywordsControl.push(this.formBuilder.group(
@@ -62,14 +62,14 @@ export class ConfigComponent implements OnInit {
                   config_id: config.id
                 }
                 )
-              )
-            })
-          }else{
-            this.helperService.showSpecificNotification("error", data.message, data.message)
+              );
+            });
+          } else {
+            this.helperService.showSpecificNotification('error', data.message, data.message);
           }
         },
         error => {
-          this.helperService.showSpecificNotification("error", error, error)
+          this.helperService.showSpecificNotification('error', error, error);
         });
   }
 
@@ -83,14 +83,14 @@ export class ConfigComponent implements OnInit {
   }
 
   addKeyword() {
-    const control = <FormArray>this.configForm.controls['keywords'];
+    const control = this.configForm.controls.keywords as FormArray;
     control.push(this.initKeywords());
-    var container = document.getElementById("config-form-elments");
+    const container = document.getElementById('config-form-elments');
     container.scrollTop = container.scrollHeight;
   }
 
   removeKeyword(i: number) {
-    const control = <FormArray>this.configForm.controls['keywords'];
+    const control = this.configForm.controls.keywords as FormArray;
     control.removeAt(i);
   }
 
@@ -102,23 +102,23 @@ export class ConfigComponent implements OnInit {
       return;
     }
     this.loading = true;
-    const params = {"domain": this.f.domain.value, "keywords": this.f.keywords.value};
-    if(this.id){
-      params["domain_id"] = this.id;
+    const params = {domain: this.f.domain.value, keywords: this.f.keywords.value};
+    if (this.id) {
+      params['domain_id'] = this.id;
     }
-    this.apiService.post(params, "CREATE_CONFIG").pipe(first())
+    this.apiService.post(params, 'CREATE_CONFIG').pipe(first())
       .subscribe(
         data => {
           const success = data.success;
-          if(success == true){
-            this.helperService.showSpecificNotification("success", data.message, data.message)
-          }else{
-            this.helperService.showSpecificNotification("error", data.message, data.message)
+          if (success === true) {
+            this.helperService.showSpecificNotification('success', data.message, data.message);
+          } else {
+            this.helperService.showSpecificNotification('error', data.message, data.message);
           }
         },
         error => {
           this.loading = false;
-          this.helperService.showSpecificNotification("error", error, error)
+          this.helperService.showSpecificNotification('error', error, error);
         });
   }
 
