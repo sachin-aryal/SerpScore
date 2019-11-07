@@ -1,0 +1,89 @@
+<div class="container">
+  <div class="categories">
+    <div class="home-header">
+      <div class="d-flex justify-content-center">
+        <div class="col-md-12">
+          <h3>GCS Configuration</h3>
+        </div>
+      </div>
+    </div>
+    <div class="content-panel">
+      <div class="d-flex justify-content-center">
+        <div class="col-md-12">
+          <div id="config_form">
+            <form [formGroup]="configForm" (ngSubmit)="onSubmit()" class="panel-body well">
+              <fieldset>
+                <div class="row ">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="domain">Domain</label>
+                      <input id="domain" type="text" formControlName="domain" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.domain.errors }" />
+                      <div *ngIf="submitted && f.domain.errors" class="invalid-feedback">
+                        <div *ngIf="f.domain.errors.required">Domain is required</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div style="margin-top: 36px">
+                      <button class="button btn-info" (click)="addKeyword()" style="cursor: default">
+                        <fa-icon [icon]="faPlus"></fa-icon> Add Keyword
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-5">
+                    <strong>Keyword</strong>
+                  </div>
+                  <div class="col-md-1">
+                    <strong>Fetch Interval</strong>
+                  </div>
+                  <div class="col-md-3">
+                    <strong>Status</strong>
+                  </div>
+                  <div class="col-md-3">
+                    <strong> Action</strong>
+                  </div>
+                </div>
+                <div id="config-form-elments">
+                  <div formArrayName="keywords">
+                    <div *ngFor="let k of configForm.get('keywords')['controls']; let i=index" class="panel panel-default">
+                      <div class="row config-row-form" [formGroupName]="i">
+                        <div class="col-md-5">
+                          <div class="form-group">
+                            <input type="text" class="form-control" formControlName="keyword" id="keyword" name="keyword" required="required"/>
+                          </div>
+                        </div>
+                        <div class="col-md-1">
+                          <div class="form-group">
+                            <input type="text" class="form-control" formControlName="fetch_interval" id="fetch_interval" name="fetch_interval" required="required"/>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="status{{i}}" formControlName="status">
+                            <label class="custom-control-label" for="status{{i}}">Fetch Keyword Data</label>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <fa-icon class="trash-icon" style="color: red" *ngIf="configForm.get('keywords')['controls'].length > 1" (click)="removeKeyword(i)" [icon]="faTrash"></fa-icon>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <input class="form-control btn btn-primary" type="submit" value="Save"/>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~angular-notifier/styles";
+
+body{
+  background-color: #eee !important;
+  font-size: 13px !important;
+}
+
+.categories{
+  background-color: #fff;
+  padding: 5px 50px 10px 50px;
+}
+.content-panel, .home-header{
+  text-align: center;
+  margin-top: 5px;
+  background-color: #fbfbfb;
+  padding: 15px;
+  border: 1px solid #f3f3f3;
+  border-bottom-left-radius: 0.9em;
+  border-bottom-right-radius: 0.9em;
+}
+
+.trash-icon{
+  color: red;
+}
+.edit-icon{
+  color: #e89f61;
+}
+
+.fa-arrow-up{
+  color: green;
+}
+.fa-arrow-down{
+  color: red;
+}
+th{
+  border-bottom:none !important;;
+}
+fa-icon{
+  cursor: pointer;
+}

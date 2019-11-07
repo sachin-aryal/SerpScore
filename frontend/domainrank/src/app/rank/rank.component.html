@@ -1,0 +1,80 @@
+<div class="container">
+  <div class="categories">
+    <div class="home-header">
+      <div class="d-flex justify-content-center">
+        <div class="col-md-12">
+          <h6>Ranking</h6>
+        </div>
+      </div>
+    </div>
+    <div class="content-panel">
+      <div class="d-flex justify-content-center">
+        <div class="col-md-12">
+          <table *ngIf="data?.length > 0" datatable style="margin-top: 20px" class="table table-striped border">
+            <thead><tr>
+              <th scope="col">#</th>
+              <th scope="col">Domain</th>
+              <th scope="col">Keyword</th>
+              <th scope="col">Rank</th>
+              <th scope="col">1 Day</th>
+              <th scope="col">7 Days</th>
+              <th scope="col">30 Days</th>
+              <th scope="col">Date Added</th>
+              <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of data;let i = index" data-toggle="collapse" [attr.data-target]="'#'+item.id" data-parent="#myTable">
+              <td>{{i+1}}</td>
+              <td><a target="_blank" href={{getUrl(item.domain_name)}}>{{item.domain_name}}</a></td>
+              <td>{{item.keyword}}</td>
+              <td>{{item.page_rank}}</td>
+              <td *ngIf="item.day1">{{item.day1}} <fa-icon [icon]="item.day1 > 0?faArrowUp:faArrowDown"></fa-icon></td>
+              <td *ngIf="!item.day1">-</td>
+              <td *ngIf="item.day7">{{item.day7}} <fa-icon [icon]="item.day7 > 0?faArrowUp:faArrowDown"></fa-icon></td>
+              <td *ngIf="!item.day7">-</td>
+              <td *ngIf="item.day30">{{item.day30}} <fa-icon [icon]="item.day30 > 0?faArrowUp:faArrowDown"></fa-icon></td>
+              <td *ngIf="!item.day30">-</td>
+              <td>{{item.executed_ts}}</td>
+              <td><fa-icon title="Search Data" [icon]="faSearch" (click)="search_data(item.config)"></fa-icon> |
+                <fa-icon (click)="plotChart(item.config)" [icon]="faChartLine"></fa-icon></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isSearch && drilledData.length > 0" class="content-panel" style="margin-top: 15px">
+    <div class="home-header">
+      <div class="d-flex justify-content-center">
+        <div class="col-md-12">
+          <h6>Rank data of last 30 Days</h6>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <table *ngIf="data?.length > 0" datatable style="margin-top: 20px" class="table table-striped border">
+            <thead><tr>
+              <th scope="col">#</th>
+              <th scope="col">Domain</th>
+              <th scope="col">Keyword</th>
+              <th scope="col">Rank</th>
+              <th scope="col">Date Added</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of drilledData;let i = index" data-toggle="collapse" [attr.data-target]="'#'+item.id" data-parent="#drilledTable">
+              <td>{{i+1}}</td>
+              <td><a target="_blank" href={{getUrl(item.Domain)}}>{{item.Domain}}</a></td>
+              <td>{{item.Keyword}}</td>
+              <td>{{item['Page Rank']}}</td>
+              <td>{{item['Date Added']}}</td>
+            </tr>
+            </tbody>
+          </table>
+    </div>
+  </div>
+  <div class="rank-graph" *ngIf="isChart && drilledData.length > 0" [chart]="chart">
+  </div>
+</div>

@@ -1,0 +1,14 @@
+#config-form-elments{
+  max-height:360px;
+  overflow-y: scroll;
+  overflow-x:hidden;
+  border: 1px solid rgba(238, 238, 238, 0.67);
+  margin: 10px 0 10px 0;
+}
+.config-row-form{
+  border: 1px solid #eeeeee;
+  padding: 10px;
+}
+.config-row-form  .form-group{
+  margin-bottom: 0 !important;
+}

@@ -1,0 +1,27 @@
+.drilled-row .fieldvalue {
+  background-color: #eeeff6;
+  color: #cbcdd6;
+  line-height: 1.5;
+  margin: 5px 0px 0px;
+  padding: 10px;
+}
+
+.drilled-row .fv{
+  color: #444444;
+  padding: 0 10px;
+}
+.drilled-row .fwk{
+  color: #4990a0;
+  font-size: 12px;
+}
+
+.drilled-row .fwv{
+  font-size: 12px;
+  color: #444444;
+  cursor: pointer;
+}
+
+.rank-graph{
+  margin-top: 15px;
+  height: 350px;
+}
