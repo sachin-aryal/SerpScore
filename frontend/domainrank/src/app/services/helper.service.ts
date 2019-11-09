@@ -13,7 +13,7 @@ export class HelperService {
     this.notifier = notifier;
   }
 
-  plotSplineChart(xAxisType, title, yAxisTitle, seriesName, data) {
+  public static plotSplineChart(xAxisType, title, yAxisTitle, seriesName, data) {
     return new Chart({
       chart: {
         type: 'spline'
@@ -63,7 +63,7 @@ export class HelperService {
 
   }
 
-  plotColumnChart(title, yAxisTitle, data) {
+  public static plotColumnChart(title, yAxisTitle, data) {
     return new Chart({
       chart: {
         type: 'column'
@@ -114,15 +114,30 @@ export class HelperService {
   exportDomainReport(domainId, apiService) {
     apiService.downloadFile({domain_id: domainId}, 'DOWNLOAD_DOMAIN_REPORT').
     subscribe((data) => {
-      const downloadURL = window.URL.createObjectURL(data);
-      const link = document.createElement('a');
-      link.href = downloadURL;
-      link.download = domainId + '_report.csv';
-      link.click();
-    },
-    error => {
+        const downloadURL = window.URL.createObjectURL(data);
+        const link = document.createElement('a');
+        link.href = downloadURL;
+        link.download = domainId + '_report.csv';
+        link.click();
+      },
+      error => {
+        this.showSpecificNotification('error', error, '');
+      });
+  }
+
+  deleteDomain(domainId, apiService) {
+    if (confirm('Are you sure to delete this Domain')) {
+      apiService.post({domain_id: domainId}, 'DELETE_DOMAIN').subscribe(response => {
+          if (response.success === true) {
+            this.showSpecificNotification('success', 'Domain Deleted Successfully.', '');
+          } else {
+            this.showSpecificNotification('error', response.message, '');
+          }
+        },
+        error => {
           this.showSpecificNotification('error', error, '');
-    });
+        });
+    }
   }
 
 }

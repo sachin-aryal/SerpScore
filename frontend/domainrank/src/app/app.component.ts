@@ -12,7 +12,7 @@ import {HelperService} from './services/helper.service';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'domainrank';
 
   isLoggedIn$: Observable<boolean>;
@@ -38,10 +38,6 @@ export class AppComponent implements OnInit{
           });
       }
     });
-  }
-
-  deleteDomain(item) {
-
   }
 
   logout() {

@@ -24,8 +24,8 @@
               <td title="View Details"><a [routerLink]="['/record/details/'+item.id]" style="color: rgb(64, 64, 64);font-weight: 500;cursor: pointer">{{item.domain}}</a></td>
               <td>
                 <fa-icon class="edit-icon" title="Edit Configuration" [routerLink]="['/config/edit/'+item.id]" [icon]="faPen"></fa-icon>&nbsp;|&nbsp;
-                <fa-icon class="trash-icon" title="Delete Configuration" (click)="deleteDomain(item)" [icon]="faTrash"></fa-icon>&nbsp;|&nbsp;
-                <fa-icon title="Export Report" (click)="helperService.exportDomainReport(item.id, apiService)" [icon]="faFileExport"></fa-icon>
+                <fa-icon class="trash-icon" title="Delete Domain" (click)="this.helperService.deleteDomain(item.id, this.apiService)" [icon]="faTrash"></fa-icon>&nbsp;|&nbsp;
+                <fa-icon title="Export Report" (click)="this.helperService.exportDomainReport(item.id, this.apiService)" [icon]="faFileExport"></fa-icon>
               </td>
             </tr>
             </tbody>

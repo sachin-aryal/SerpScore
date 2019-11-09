@@ -72,7 +72,7 @@ export class RankComponent implements OnInit {
               row['data'] = [record.page_rank];
               ranks.push(row);
             });
-            this.keywordChart = this.helperService.plotColumnChart('Keyword Rank', 'Rank', ranks);
+            this.keywordChart = HelperService.plotColumnChart('Keyword Rank', 'Rank', ranks);
           } else {
             this.helperService.showSpecificNotification('error', data.message, data.message);
           }
@@ -124,7 +124,7 @@ export class RankComponent implements OnInit {
               this.isSearch = false;
               this.isChart = true;
               const chartData = this.getProcessedData(this.drilledData);
-              this.rankChart = this.helperService.plotSplineChart('datetime', domain + ' - ' + keyword, 'Google Ranking',
+              this.rankChart = HelperService.plotSplineChart('datetime', domain + ' - ' + keyword, 'Google Ranking',
                 keyword, chartData);
             }
           } else {

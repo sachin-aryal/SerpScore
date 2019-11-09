@@ -23,6 +23,7 @@ export class ApiService {
       GET_RANK: '/api/get_rank/',
       DOWNLOAD_DOMAIN_REPORT: '/api/download_domain_report/',
       RANK_DATA: '/api/drill_rank_data/',
+      DELETE_DOMAIN: '/api/delete_domain/'
     };
     return this.basePath + urlMapping[api];
   }
@@ -39,13 +40,19 @@ export class ApiService {
     } else {
       if (error.status === 401 || error.status === 403) {
         localStorage.removeItem('currentUser');
+        msg = 'The request is not authorized.';
+      } else {
+        if (error.status === 0) {
+          msg = 'Server is not reachable. Try again later';
+        } else {
+          msg = error.error;
+        }
       }
       console.error(
         `Backend returned code ${error.status}, ` +
         `body was: ${error.error}`);
-      msg = error.error;
     }
-    const data = {error: msg, status: error.status};
+    const data = `Error: ${msg}; status code: ${error.status}`;
     // return an observable with a user-facing error message
     return throwError(JSON.stringify((data)));
   }

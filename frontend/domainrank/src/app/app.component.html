@@ -19,8 +19,8 @@
                 <ul class="dropdown-menu">
                   <li><a [routerLink]="['/record/details/'+item.id]" class="dropdown-sub-item">View Details</a></li>
                   <li><a class="dropdown-sub-item" (click)="helperService.exportDomainReport(item.id, apiService)">Export Report</a></li>
-                  <li><a class="dropdown-sub-item" [routerLink]="['/config/edit/'+item.id]">Edit Category</a></li>
-                  <li><a class="dropdown-sub-item" (click)="deleteDomain(item)">Delete Category</a></li>
+                  <li><a class="dropdown-sub-item" [routerLink]="['/config/edit/'+item.id]">Edit Configuration</a></li>
+                  <li><a class="dropdown-sub-item" (click)="this.helperService.deleteDomain(item.id, this.apiService)">Delete Domain</a></li>
                 </ul>
               </li>
             </ul>
