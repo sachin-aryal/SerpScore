@@ -38,3 +38,5 @@ class Rank(models.Model):
     page_rank = models.IntegerField(blank=False)
     executed_ts = models.DateField(default=timezone.now)
     config = models.ForeignKey(to=Config, on_delete=CASCADE)
+    class Meta:
+        unique_together = ('executed_ts', 'config')

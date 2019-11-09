@@ -10,5 +10,6 @@ urlpatterns = [
     path('get_config/', get_config, name="get-credentials"),
     path('get_rank/', get_rank, name="get_rank"),
     path('download_domain_report/', download_domain_report, name="download_domain_report"),
-    path('drill_rank_data/', drill_rank_data, name="drill_rank_data")
+    path('drill_rank_data/', drill_rank_data, name="drill_rank_data"),
+    path('delete_domain/', delete_domain, name="delete_domain")
 ]

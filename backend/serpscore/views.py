@@ -158,3 +158,13 @@ def drill_rank_data(request):
         return JsonResponse({"success": True, "data": json.dumps(final_data, default=util.custom_json_converter)}, status=status.HTTP_200_OK)
     except Exception as ex:
         return JsonResponse({"success": False, "message": "Error: {}".format(str(ex))}, status=status.HTTP_200_OK)
+
+def delete_domain(request):
+    try:
+        data = request.params
+        user_id = request.user.id
+        domain_id = data["domain_id"]
+        Domain.objects.filter(id=domain_id, user_id=user_id).delete()
+        return JsonResponse({"success": True, "message": "Domain Deleted Successfully"}, status=status.HTTP_200_OK)
+    except Exception as ex:
+        return JsonResponse({"success": False, "message": "Error: {}".format(str(ex))}, status=status.HTTP_200_OK)
