@@ -12,7 +12,7 @@ class AuthenticationMiddlewareJWT(object):
         try:
             requested_url = request.build_absolute_uri('?')
             if "api/get_api_token" not in request.build_absolute_uri('?') \
-                    and "/admin" not in requested_url:
+                    and "/admin" not in requested_url and "/api/" in requested_url:
                 token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
                 data = {'token': token}
                 valid_data = VerifyJSONWebTokenSerializer().validate(data)
