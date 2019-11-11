@@ -15,7 +15,7 @@ import { SignupComponent } from './signup/signup.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
 import { RankComponent } from './rank/rank.component';
-import {NotifierModule, NotifierOptions} from "angular-notifier";
+import {NotifierModule, NotifierOptions} from 'angular-notifier';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
