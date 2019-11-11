@@ -12,7 +12,7 @@ BACKGROUND_TASK = os.path.join(BASE_DIR, "Job", "serpscore_background_task.py")
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'api.settings')
     try:
-        pro = subprocess.Popen([sys.executable, BACKGROUND_TASK, SQL_CONF_FILE])
+       # pro = subprocess.Popen([sys.executable, BACKGROUND_TASK, SQL_CONF_FILE])
         from django.core.management import execute_from_command_line
     except ImportError as exc:
         raise ImportError(
