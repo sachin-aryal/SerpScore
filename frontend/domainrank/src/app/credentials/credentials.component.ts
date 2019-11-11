@@ -16,7 +16,7 @@ export class CredentialsComponent implements OnInit {
   submitted = false;
 
   constructor(private formBuilder: FormBuilder,
-              private apiService: ApiService, private helperService: HelperService) {
+              public apiService: ApiService, public helperService: HelperService) {
 
   }
 

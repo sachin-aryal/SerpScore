@@ -37,8 +37,8 @@ export class RankComponent implements OnInit {
   domainId: string;
 
   constructor(private route: ActivatedRoute,
-              private apiService: ApiService,
-              private helperService: HelperService) {
+              public apiService: ApiService,
+              public helperService: HelperService) {
     route.params.subscribe(val => {
       const id = this.route.snapshot.params.id;
       this.domainId = id;

@@ -20,8 +20,8 @@ export class AppComponent implements OnInit {
 
   constructor(private authService: AuthService,
               private router: Router,
-              private apiService: ApiService,
-              private helperService: HelperService) {
+              public apiService: ApiService,
+              public helperService: HelperService) {
   }
   ngOnInit() {
     this.isLoggedIn$ = this.authService.isLoggedIn;

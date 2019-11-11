@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
   faPen = faPen;
   faTrash = faTrash;
   faFileExport = faFileExport;
-  constructor(private apiService: ApiService, private helperService: HelperService) {
+  constructor(public apiService: ApiService, public helperService: HelperService) {
     this.domainData = [];
   }
 
